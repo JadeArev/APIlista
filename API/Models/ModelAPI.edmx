@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ApiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Mascotas">
+          <Key>
+            <PropertyRef Name="IdMascotas" />
+          </Key>
+          <Property Name="IdMascotas" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AnoNac" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Raza" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vacunas" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Castrado" Type="bit" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IdRefugios" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Refugios">
+          <Key>
+            <PropertyRef Name="IdRefugios" />
+          </Key>
+          <Property Name="IdRefugios" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdMascota" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="Telefono" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="550" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="350" Nullable="false" />
+          <Property Name="IdUsuarios" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="IdTipoUsuario" />
+          </Key>
+          <Property Name="IdTipoUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoRefugio" Type="bit" Nullable="false" />
+          <Property Name="TipoUsuario" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="450" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="550" Nullable="false" />
+          <Property Name="IdMascota" Type="int" Nullable="false" />
+          <Property Name="IdTipoUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Mascotas_Refugios">
+          <End Role="Refugios" Type="Self.Refugios" Multiplicity="1" />
+          <End Role="Mascotas" Type="Self.Mascotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refugios">
+              <PropertyRef Name="IdRefugios" />
+            </Principal>
+            <Dependent Role="Mascotas">
+              <PropertyRef Name="IdRefugios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refugios_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Refugios" Type="Self.Refugios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Refugios">
+              <PropertyRef Name="IdUsuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Mascotas">
+          <End Role="Mascotas" Type="Self.Mascotas" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mascotas">
+              <PropertyRef Name="IdMascotas" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IdMascota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ApiModelStoreContainer">
+          <EntitySet Name="Mascotas" EntityType="Self.Mascotas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refugios" EntityType="Self.Refugios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoUsuario" EntityType="Self.TipoUsuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Mascotas_Refugios" Association="Self.FK_Mascotas_Refugios">
+            <End Role="Refugios" EntitySet="Refugios" />
+            <End Role="Mascotas" EntitySet="Mascotas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refugios_Usuarios" Association="Self.FK_Refugios_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Refugios" EntitySet="Refugios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Mascotas" Association="Self.FK_Usuarios_Mascotas">
+            <End Role="Mascotas" EntitySet="Mascotas" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_TipoUsuario" Association="Self.FK_Usuarios_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuario" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ApiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Mascotas">
+          <Key>
+            <PropertyRef Name="IdMascotas" />
+          </Key>
+          <Property Name="IdMascotas" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnoNac" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Raza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Vacunas" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Castrado" Type="Boolean" Nullable="false" />
+          <Property Name="Foto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdRefugios" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Refugios" Relationship="Self.FK_Mascotas_Refugios" FromRole="Mascotas" ToRole="Refugios" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Mascotas" FromRole="Mascotas" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Refugios">
+          <Key>
+            <PropertyRef Name="IdRefugios" />
+          </Key>
+          <Property Name="IdRefugios" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdMascota" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="550" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Foto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="350" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUsuarios" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Mascotas" Relationship="Self.FK_Mascotas_Refugios" FromRole="Refugios" ToRole="Mascotas" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Refugios_Usuarios" FromRole="Refugios" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TipoUsuario">
+          <Key>
+            <PropertyRef Name="IdTipoUsuario" />
+          </Key>
+          <Property Name="IdTipoUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoRefugio" Type="Boolean" Nullable="false" />
+          <Property Name="TipoUsuario1" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_TipoUsuario" FromRole="TipoUsuario" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Foto" Type="String" MaxLength="450" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="550" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdMascota" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Mascotas" Relationship="Self.FK_Usuarios_Mascotas" FromRole="Usuarios" ToRole="Mascotas" />
+          <NavigationProperty Name="Refugios" Relationship="Self.FK_Refugios_Usuarios" FromRole="Usuarios" ToRole="Refugios" />
+          <NavigationProperty Name="TipoUsuario" Relationship="Self.FK_Usuarios_TipoUsuario" FromRole="Usuarios" ToRole="TipoUsuario" />
+        </EntityType>
+        <Association Name="FK_Mascotas_Refugios">
+          <End Role="Refugios" Type="Self.Refugios" Multiplicity="1" />
+          <End Role="Mascotas" Type="Self.Mascotas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refugios">
+              <PropertyRef Name="IdRefugios" />
+            </Principal>
+            <Dependent Role="Mascotas">
+              <PropertyRef Name="IdRefugios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_Mascotas">
+          <End Role="Mascotas" Type="Self.Mascotas" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mascotas">
+              <PropertyRef Name="IdMascotas" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IdMascota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Refugios_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Refugios" Type="Self.Refugios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Refugios">
+              <PropertyRef Name="IdUsuarios" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuarios_TipoUsuario">
+          <End Role="TipoUsuario" Type="Self.TipoUsuario" Multiplicity="1" />
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoUsuario">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Principal>
+            <Dependent Role="Usuarios">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ApiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Mascotas" EntityType="Self.Mascotas" />
+          <EntitySet Name="Refugios" EntityType="Self.Refugios" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TipoUsuario" EntityType="Self.TipoUsuario" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK_Mascotas_Refugios" Association="Self.FK_Mascotas_Refugios">
+            <End Role="Refugios" EntitySet="Refugios" />
+            <End Role="Mascotas" EntitySet="Mascotas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_Mascotas" Association="Self.FK_Usuarios_Mascotas">
+            <End Role="Mascotas" EntitySet="Mascotas" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Refugios_Usuarios" Association="Self.FK_Refugios_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Refugios" EntitySet="Refugios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuarios_TipoUsuario" Association="Self.FK_Usuarios_TipoUsuario">
+            <End Role="TipoUsuario" EntitySet="TipoUsuario" />
+            <End Role="Usuarios" EntitySet="Usuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ApiModelStoreContainer" CdmEntityContainer="ApiEntities">
+          <EntitySetMapping Name="Mascotas">
+            <EntityTypeMapping TypeName="ApiModel.Mascotas">
+              <MappingFragment StoreEntitySet="Mascotas">
+                <ScalarProperty Name="IdMascotas" ColumnName="IdMascotas" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="AnoNac" ColumnName="AnoNac" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Raza" ColumnName="Raza" />
+                <ScalarProperty Name="Vacunas" ColumnName="Vacunas" />
+                <ScalarProperty Name="Castrado" ColumnName="Castrado" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="IdRefugios" ColumnName="IdRefugios" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refugios">
+            <EntityTypeMapping TypeName="ApiModel.Refugios">
+              <MappingFragment StoreEntitySet="Refugios">
+                <ScalarProperty Name="IdRefugios" ColumnName="IdRefugios" />
+                <ScalarProperty Name="IdMascota" ColumnName="IdMascota" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdUsuarios" ColumnName="IdUsuarios" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ApiModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoUsuario">
+            <EntityTypeMapping TypeName="ApiModel.TipoUsuario">
+              <MappingFragment StoreEntitySet="TipoUsuario">
+                <ScalarProperty Name="IdTipoUsuario" ColumnName="IdTipoUsuario" />
+                <ScalarProperty Name="TipoRefugio" ColumnName="TipoRefugio" />
+                <ScalarProperty Name="TipoUsuario1" ColumnName="TipoUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="ApiModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Foto" ColumnName="Foto" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IdMascota" ColumnName="IdMascota" />
+                <ScalarProperty Name="IdTipoUsuario" ColumnName="IdTipoUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
