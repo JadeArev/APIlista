@@ -8,48 +8,43 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using API.Models;
+using Api.Models;
 
-namespace API.Controllers
+namespace Api.Controllers
 {
     public class RefugiosController : ApiController
     {
         private ApiEntities db = new ApiEntities();
 
-        // GET: api/Refugios
-        public IQueryable<Refugios> GetRefugios()
-        {
-            return db.Refugios;
-        }
-
+        [Route("api/refugios/getrefugio/{id}")]
         // GET: api/Refugios/5
-        [ResponseType(typeof(Refugios))]
-        public IHttpActionResult GetRefugios(int id)
+        [ResponseType(typeof(Refugio))]
+        public IHttpActionResult GetRefugio(int id)
         {
-            Refugios refugios = db.Refugios.Find(id);
-            if (refugios == null)
+            Refugio refugio = db.Refugio.Find(id);
+            if (refugio == null)
             {
                 return NotFound();
             }
 
-            return Ok(refugios);
+            return Ok(refugio);
         }
 
         // PUT: api/Refugios/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutRefugios(int id, Refugios refugios)
+        public IHttpActionResult PutRefugio(int id, Refugio refugio)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != refugios.IdRefugios)
+            if (id != refugio.IdRefugio)
             {
                 return BadRequest();
             }
 
-            db.Entry(refugios).State = EntityState.Modified;
+            db.Entry(refugio).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +52,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RefugiosExists(id))
+                if (!RefugioExists(id))
                 {
                     return NotFound();
                 }
@@ -71,34 +66,34 @@ namespace API.Controllers
         }
 
         // POST: api/Refugios
-        [ResponseType(typeof(Refugios))]
-        public IHttpActionResult PostRefugios(Refugios refugios)
+        [ResponseType(typeof(Refugio))]
+        public IHttpActionResult PostRefugio(Refugio refugio)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Refugios.Add(refugios);
+            db.Refugio.Add(refugio);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = refugios.IdRefugios }, refugios);
+            return CreatedAtRoute("DefaultApi", new { id = refugio.IdRefugio }, refugio);
         }
 
         // DELETE: api/Refugios/5
-        [ResponseType(typeof(Refugios))]
-        public IHttpActionResult DeleteRefugios(int id)
+        [ResponseType(typeof(Refugio))]
+        public IHttpActionResult DeleteRefugio(int id)
         {
-            Refugios refugios = db.Refugios.Find(id);
-            if (refugios == null)
+            Refugio refugio = db.Refugio.Find(id);
+            if (refugio == null)
             {
                 return NotFound();
             }
 
-            db.Refugios.Remove(refugios);
+            db.Refugio.Remove(refugio);
             db.SaveChanges();
 
-            return Ok(refugios);
+            return Ok(refugio);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +105,9 @@ namespace API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool RefugiosExists(int id)
+        private bool RefugioExists(int id)
         {
-            return db.Refugios.Count(e => e.IdRefugios == id) > 0;
+            return db.Refugio.Count(e => e.IdRefugio == id) > 0;
         }
     }
 }

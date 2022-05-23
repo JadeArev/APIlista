@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace API
+namespace Api
 {
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
-            // Configuración y servicios de Web API
+            // Configuración y servicios de API web
 
-            // Rutas de Web API
+            // Rutas de API web
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -19,9 +19,11 @@ namespace API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-             var json = config.Formatters.JsonFormatter;
+
+            var json = config.Formatters.JsonFormatter;
             json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
         }
     }
 }

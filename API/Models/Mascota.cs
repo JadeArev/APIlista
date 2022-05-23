@@ -12,9 +12,18 @@ namespace Api.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TipoUsuario
+    public partial class Mascota
     {
-        public int IdTipoUsuario { get; set; }
-        public string Tipo { get; set; }
+        public int IdMascota { get; set; }
+        public string Nombre { get; set; }
+        public int Edad { get; set; }
+        public string Estado { get; set; }
+        public int IdRefugio { get; set; }
+        public string Foto { get; set; }
+        public int IdRaza { get; set; }
+        public bool Castrado { get; set; }
+    
+        public virtual Raza Raza { get; set; }
+        public virtual Refugio Refugio { get; set; }
     }
 }

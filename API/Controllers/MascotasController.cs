@@ -8,25 +8,29 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using API.Models;
+using Api.Models;
 
-namespace API.Controllers
+namespace Api.Controllers
 {
     public class MascotasController : ApiController
     {
         private ApiEntities db = new ApiEntities();
 
         // GET: api/Mascotas
-        public IQueryable<Mascotas> GetMascotas()
+        public IQueryable<Mascota> GetMascota()
         {
-            return db.Mascotas;
+            return db.Mascota;
         }
 
+
+
+        [Route("api/Mascotas/GetMascotaByRefugio/{idRefugio}")]
         // GET: api/Mascotas/5
-        [ResponseType(typeof(Mascotas))]
-        public IHttpActionResult GetMascotas(int id)
+        [ResponseType(typeof(List<Mascota>))]
+        public IHttpActionResult GetMascotaByRefugio(int idRefugio)
         {
-            Mascotas mascotas = db.Mascotas.Find(id);
+            List<Mascota> mascotas = db.Mascota.
+                Where(m=>m.IdRefugio==idRefugio).ToList();
             if (mascotas == null)
             {
                 return NotFound();
@@ -37,19 +41,19 @@ namespace API.Controllers
 
         // PUT: api/Mascotas/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutMascotas(int id, Mascotas mascotas)
+        public IHttpActionResult PutMascota(int id, Mascota mascota)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != mascotas.IdMascotas)
+            if (id != mascota.IdMascota)
             {
                 return BadRequest();
             }
 
-            db.Entry(mascotas).State = EntityState.Modified;
+            db.Entry(mascota).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +61,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MascotasExists(id))
+                if (!MascotaExists(id))
                 {
                     return NotFound();
                 }
@@ -71,34 +75,34 @@ namespace API.Controllers
         }
 
         // POST: api/Mascotas
-        [ResponseType(typeof(Mascotas))]
-        public IHttpActionResult PostMascotas(Mascotas mascotas)
+        [ResponseType(typeof(Mascota))]
+        public IHttpActionResult PostMascota(Mascota mascota)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Mascotas.Add(mascotas);
+            db.Mascota.Add(mascota);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = mascotas.IdMascotas }, mascotas);
+            return CreatedAtRoute("DefaultApi", new { id = mascota.IdMascota }, mascota);
         }
 
         // DELETE: api/Mascotas/5
-        [ResponseType(typeof(Mascotas))]
-        public IHttpActionResult DeleteMascotas(int id)
+        [ResponseType(typeof(Mascota))]
+        public IHttpActionResult DeleteMascota(int id)
         {
-            Mascotas mascotas = db.Mascotas.Find(id);
-            if (mascotas == null)
+            Mascota mascota = db.Mascota.Find(id);
+            if (mascota == null)
             {
                 return NotFound();
             }
 
-            db.Mascotas.Remove(mascotas);
+            db.Mascota.Remove(mascota);
             db.SaveChanges();
 
-            return Ok(mascotas);
+            return Ok(mascota);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +114,9 @@ namespace API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool MascotasExists(int id)
+        private bool MascotaExists(int id)
         {
-            return db.Mascotas.Count(e => e.IdMascotas == id) > 0;
+            return db.Mascota.Count(e => e.IdMascota == id) > 0;
         }
     }
 }

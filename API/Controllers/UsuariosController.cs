@@ -8,48 +8,48 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using API.Models;
+using Api.Models;
 
-namespace API.Controllers
+namespace Api.Controllers
 {
     public class UsuariosController : ApiController
     {
         private ApiEntities db = new ApiEntities();
 
         // GET: api/Usuarios
-        public IQueryable<Usuarios> GetUsuarios()
+        public IQueryable<Usuario> GetUsuario()
         {
-            return db.Usuarios;
+            return db.Usuario;
         }
 
         // GET: api/Usuarios/5
-        [ResponseType(typeof(Usuarios))]
-        public IHttpActionResult GetUsuarios(int id)
+        [ResponseType(typeof(Usuario))]
+        public IHttpActionResult GetUsuario(int id)
         {
-            Usuarios usuarios = db.Usuarios.Find(id);
-            if (usuarios == null)
+            Usuario usuario = db.Usuario.Find(id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return Ok(usuarios);
+            return Ok(usuario);
         }
 
         // PUT: api/Usuarios/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUsuarios(int id, Usuarios usuarios)
+        public IHttpActionResult PutUsuario(int id, Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != usuarios.IdUsuario)
+            if (id != usuario.IdUsuario)
             {
                 return BadRequest();
             }
 
-            db.Entry(usuarios).State = EntityState.Modified;
+            db.Entry(usuario).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsuariosExists(id))
+                if (!UsuarioExists(id))
                 {
                     return NotFound();
                 }
@@ -71,34 +71,34 @@ namespace API.Controllers
         }
 
         // POST: api/Usuarios
-        [ResponseType(typeof(Usuarios))]
-        public IHttpActionResult PostUsuarios(Usuarios usuarios)
+        [ResponseType(typeof(Usuario))]
+        public IHttpActionResult PostUsuario(Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Usuarios.Add(usuarios);
+            db.Usuario.Add(usuario);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = usuarios.IdUsuario }, usuarios);
+            return CreatedAtRoute("DefaultApi", new { id = usuario.IdUsuario }, usuario);
         }
 
         // DELETE: api/Usuarios/5
-        [ResponseType(typeof(Usuarios))]
-        public IHttpActionResult DeleteUsuarios(int id)
+        [ResponseType(typeof(Usuario))]
+        public IHttpActionResult DeleteUsuario(int id)
         {
-            Usuarios usuarios = db.Usuarios.Find(id);
-            if (usuarios == null)
+            Usuario usuario = db.Usuario.Find(id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            db.Usuarios.Remove(usuarios);
+            db.Usuario.Remove(usuario);
             db.SaveChanges();
 
-            return Ok(usuarios);
+            return Ok(usuario);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UsuariosExists(int id)
+        private bool UsuarioExists(int id)
         {
-            return db.Usuarios.Count(e => e.IdUsuario == id) > 0;
+            return db.Usuario.Count(e => e.IdUsuario == id) > 0;
         }
     }
 }

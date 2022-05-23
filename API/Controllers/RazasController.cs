@@ -12,44 +12,44 @@ using Api.Models;
 
 namespace Api.Controllers
 {
-    public class TipoUsuariosController : ApiController
+    public class RazasController : ApiController
     {
         private ApiEntities db = new ApiEntities();
 
-        // GET: api/TipoUsuarios
-        public IQueryable<TipoUsuario> GetTipoUsuario()
+        // GET: api/Razas
+        public IQueryable<Raza> GetRaza()
         {
-            return db.TipoUsuario;
+            return db.Raza;
         }
 
-        // GET: api/TipoUsuarios/5
-        [ResponseType(typeof(TipoUsuario))]
-        public IHttpActionResult GetTipoUsuario(int id)
+        // GET: api/Razas/5
+        [ResponseType(typeof(Raza))]
+        public IHttpActionResult GetRaza(int id)
         {
-            TipoUsuario tipoUsuario = db.TipoUsuario.Find(id);
-            if (tipoUsuario == null)
+            Raza raza = db.Raza.Find(id);
+            if (raza == null)
             {
                 return NotFound();
             }
 
-            return Ok(tipoUsuario);
+            return Ok(raza);
         }
 
-        // PUT: api/TipoUsuarios/5
+        // PUT: api/Razas/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutTipoUsuario(int id, TipoUsuario tipoUsuario)
+        public IHttpActionResult PutRaza(int id, Raza raza)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != tipoUsuario.IdTipoUsuario)
+            if (id != raza.IdRaza)
             {
                 return BadRequest();
             }
 
-            db.Entry(tipoUsuario).State = EntityState.Modified;
+            db.Entry(raza).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TipoUsuarioExists(id))
+                if (!RazaExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/TipoUsuarios
-        [ResponseType(typeof(TipoUsuario))]
-        public IHttpActionResult PostTipoUsuario(TipoUsuario tipoUsuario)
+        // POST: api/Razas
+        [ResponseType(typeof(Raza))]
+        public IHttpActionResult PostRaza(Raza raza)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.TipoUsuario.Add(tipoUsuario);
+            db.Raza.Add(raza);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = tipoUsuario.IdTipoUsuario }, tipoUsuario);
+            return CreatedAtRoute("DefaultApi", new { id = raza.IdRaza }, raza);
         }
 
-        // DELETE: api/TipoUsuarios/5
-        [ResponseType(typeof(TipoUsuario))]
-        public IHttpActionResult DeleteTipoUsuario(int id)
+        // DELETE: api/Razas/5
+        [ResponseType(typeof(Raza))]
+        public IHttpActionResult DeleteRaza(int id)
         {
-            TipoUsuario tipoUsuario = db.TipoUsuario.Find(id);
-            if (tipoUsuario == null)
+            Raza raza = db.Raza.Find(id);
+            if (raza == null)
             {
                 return NotFound();
             }
 
-            db.TipoUsuario.Remove(tipoUsuario);
+            db.Raza.Remove(raza);
             db.SaveChanges();
 
-            return Ok(tipoUsuario);
+            return Ok(raza);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace Api.Controllers
             base.Dispose(disposing);
         }
 
-        private bool TipoUsuarioExists(int id)
+        private bool RazaExists(int id)
         {
-            return db.TipoUsuario.Count(e => e.IdTipoUsuario == id) > 0;
+            return db.Raza.Count(e => e.IdRaza == id) > 0;
         }
     }
 }

@@ -12,9 +12,18 @@ namespace Api.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TipoUsuario
+    public partial class Raza
     {
-        public int IdTipoUsuario { get; set; }
-        public string Tipo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Raza()
+        {
+            this.Mascota = new HashSet<Mascota>();
+        }
+    
+        public int IdRaza { get; set; }
+        public string Nombre { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Mascota> Mascota { get; set; }
     }
 }
